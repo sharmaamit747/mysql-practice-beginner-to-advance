@@ -37,3 +37,23 @@ HAVING SUM(o.amount) > (
         GROUP BY o2.user_id
     ) t
 );
+
+--- Orders greater than user’s average order ---
+
+SELECT 
+    u.id,
+    u.name,
+    o.amount
+FROM users u
+JOIN orders o ON u.id = o.user_id
+JOIN (
+    SELECT 
+        user_id,
+        AVG(amount) AS avg_amount
+    FROM orders
+    GROUP BY user_id
+) a ON a.user_id = u.id
+WHERE o.amount > a.avg_amount;
+
+
+

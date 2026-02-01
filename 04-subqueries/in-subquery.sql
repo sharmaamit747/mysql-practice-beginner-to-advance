@@ -23,3 +23,13 @@ WHERE id NOT IN (
     SELECT DISTINCT user_id
     FROM orders
 );
+
+--- Users with only paid orders ---
+
+SELECT 
+    u.id,
+    u.name
+FROM users u
+JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name
+HAVING COUNT(*) = SUM(o.status = 'paid');
